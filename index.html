@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <title>NIBBLE v1.8.3</title>
+    <title>NIBBLE v1.8.4</title>
     <style>
         :root { --glow: #00ff41; --bg: #050505; --label: #008f11; }
         body { background: var(--bg); color: var(--glow); font-family: 'Courier New', monospace; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0; overflow: hidden; -webkit-tap-highlight-color: transparent; }
@@ -12,11 +12,9 @@
         h2 { text-align: center; font-size: 1.3rem; margin-top: 0; letter-spacing: 4px; color: #fff; border-bottom: 1px solid var(--label); padding-bottom: 10px; }
         .hint { font-size: 0.8rem; color: var(--glow); font-weight: bold; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 1px; }
         
-        /* The Stealth Input Mask */
         .stealth-input {
             width: 100%; background: #000; border: 1px solid var(--label); color: var(--glow); padding: 12px; margin-bottom: 15px; box-sizing: border-box; font-family: inherit; font-size: 18px; outline: none; border-radius: 0;
-            -webkit-text-security: disc; /* Masks text as dots for humans */
-            text-security: disc;
+            -webkit-text-security: disc; text-security: disc;
         }
         
         textarea { width: 100%; background: #000; border: 1px solid var(--label); color: var(--glow); padding: 12px; margin-bottom: 15px; box-sizing: border-box; font-family: inherit; font-size: 18px; outline: none; border-radius: 0; resize: none; }
@@ -31,20 +29,28 @@
         .mode-toggle { display: flex; width: 100%; gap: 10px; margin-bottom: 20px; }
         .mode-toggle div { flex: 1; text-align: center; padding: 12px; border: 1px solid var(--label); cursor: pointer; font-size: 0.9rem; font-weight: bold; }
         .active-mode { background: var(--label); border-color: #fff !important; color: #fff; }
+
+        /* Honeypot to distract 1Password */
+        .hp-ghost { position: absolute; top: -1000px; left: -1000px; height: 0; width: 0; opacity: 0; pointer-events: none; }
     </style>
 </head>
 <body>
 
+<div class="hp-ghost">
+    <input type="text" name="username">
+    <input type="password" name="password">
+</div>
+
 <div id="terminal">
-    <h2>NIBBLE v1.8.3</h2>
+    <h2>NIBBLE v1.8.4</h2>
     
     <div class="mode-toggle">
         <div id="m-cast" class="active-mode" onclick="setMode('cast')">CAST</div>
         <div id="m-catch" onclick="setMode('catch')">CATCH</div>
     </div>
 
-    <div class="hint">SECRET HOOK:</div>
-    <input type="text" id="hook" class="stealth-input" spellcheck="false" autocomplete="one-time-code">
+    <div class="hint">S-HOOK ID:</div>
+    <input type="text" id="hid_184" class="stealth-input" spellcheck="false" autocomplete="new-password">
     
     <div class="hint">DATA STREAM:</div>
     <textarea id="dataStream" rows="4" spellcheck="false"></textarea>
@@ -73,10 +79,8 @@
     function getSalt() {
         const utcHour = new Date().getUTCHours();
         const salts = ['🐟','🐡','🐠','🦐','🐙','🦑','🦀','🐚','🐬','🐳','🐋','🦈'];
-        // Logic: 2-hour window rotation
         const speciesIndex = Math.floor(utcHour / 2);
         const nextIndex = (speciesIndex + 1) % 12;
-        
         return { 
             val: (speciesIndex + 5) * 3, 
             icons: [salts[speciesIndex], salts[nextIndex]]
@@ -98,14 +102,13 @@
             btn.style.borderColor = "#fff";
             setTimeout(() => { btn.innerText = "COPY DATA"; btn.style.borderColor = "var(--label)"; }, 2000);
         } catch (err) {
-            // Fallback for older browsers
             ds.select();
             document.execCommand('copy');
         }
     }
 
     function process() {
-        const hook = document.getElementById('hook').value;
+        const hook = document.getElementById('hid_184').value;
         const input = document.getElementById('dataStream').value.trim();
         const salt = getSalt();
         const saltVal = salt.val;
@@ -148,7 +151,6 @@
     function updateIcons() {
         document.getElementById('baitIcons').innerText = getSalt().icons.join(' ');
     }
-
     updateIcons();
     setInterval(updateIcons, 60000);
 </script>
