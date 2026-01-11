@@ -66,3 +66,11 @@ The UI was adjusted after field tests showed that low-contrast "Hacker" aestheti
 
 ### 3. Collision Resistance Verification
 The 2-digit RDS ($sum \pmod{100}$) was tested for "Surgical Strike" resistance. Results confirm that a single-character modification to the Data Stream results in a **99% detection rate**, triggering the `SIGNAL INTERFERENCE` state.
+
+### 🚀 Latest Deployment: v1.8.2 - Operational Hardening
+The terminal has been updated to prioritize field-usability and signal integrity.
+
+* **Chroma-Contrast UI:** Labels transitioned to High-Visibility Green (`--label: #008f11`) to ensure legibility across variable ambient lighting conditions and mobile display brightness levels.
+* **Species-Based Temporal Logic:** Shifted from scalar sizing to a 12-tier species rotation. This improves visual verification speed and provides superior plausible deniability over standard time-indexing.
+* **Clipboard Integration:** Implemented a hardware-level `navigator.clipboard` hook for seamless data handoff on mobile OS environments.
+* **Active RDS Gatekeeper:** Upgraded to 2-digit Recursive Digit Sum validation, providing 1:100 collision resistance and mandatory "Abort-on-Mismatch" logic.
