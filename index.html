@@ -4,51 +4,48 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <title>NIBBLE v1.8.1</title>
+    <title>NIBBLE v1.8.2</title>
     <style>
-        :root { --glow: #00ff41; --bg: #050505; }
+        :root { --glow: #00ff41; --bg: #050505; --label: #008f11; }
         body { background: var(--bg); color: var(--glow); font-family: 'Courier New', monospace; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0; overflow: hidden; -webkit-tap-highlight-color: transparent; }
-        #terminal { width: 90%; max-width: 400px; border: 1px solid var(--glow); padding: 20px; box-shadow: 0 0 15px rgba(0, 255, 65, 0.2); background: #000; }
-        h2 { text-align: center; font-size: 1.1rem; margin-top: 0; letter-spacing: 3px; color: #fff; text-shadow: 0 0 5px var(--glow); }
-        .hint { font-size: 0.65rem; color: #444; margin-bottom: 2px; text-transform: uppercase; }
-        textarea, input { width: 100%; background: #0a0a0a; border: 1px solid #333; color: var(--glow); padding: 12px; margin-bottom: 10px; box-sizing: border-box; font-family: inherit; font-size: 16px; outline: none; border-radius: 0; }
-        textarea:focus, input:focus { border-color: var(--glow); }
-        button { background: var(--glow); color: black; border: none; padding: 15px; width: 100%; font-weight: bold; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; margin-top: 5px; }
-        button:active { background: #008f11; }
-        .copy-btn { background: #111; color: var(--glow); border: 1px solid #333; padding: 5px; font-size: 0.7rem; margin-top: -5px; margin-bottom: 10px; width: auto; display: inline-block; }
-        .bait-display { display: flex; flex-direction: column; align-items: center; gap: 5px; margin-top: 20px; }
-        .icons { font-size: 1.5rem; filter: grayscale(100%) brightness(1.5); letter-spacing: 10px; }
-        .utc-time { font-size: 0.7rem; color: #444; }
-        .mode-toggle { display: flex; width: 100%; gap: 5px; margin-bottom: 15px; }
-        .mode-toggle div { flex: 1; text-align: center; padding: 10px; border: 1px solid #333; cursor: pointer; font-size: 0.75rem; letter-spacing: 1px; }
-        .active-mode { background: #111; border-color: var(--glow) !important; color: #fff; box-shadow: inset 0 0 5px var(--glow); }
+        #terminal { width: 92%; max-width: 400px; border: 2px solid var(--glow); padding: 20px; background: #000; box-sizing: border-box; }
+        h2 { text-align: center; font-size: 1.3rem; margin-top: 0; letter-spacing: 4px; color: #fff; border-bottom: 1px solid var(--label); padding-bottom: 10px; }
+        .hint { font-size: 0.8rem; color: var(--glow); font-weight: bold; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 1px; }
+        textarea, input { width: 100%; background: #000; border: 1px solid var(--label); color: var(--glow); padding: 12px; margin-bottom: 15px; box-sizing: border-box; font-family: inherit; font-size: 18px; outline: none; border-radius: 0; }
+        textarea:focus, input:focus { border: 1px solid #fff; }
+        button { background: var(--glow); color: black; border: none; padding: 18px; width: 100%; font-weight: 900; cursor: pointer; text-transform: uppercase; letter-spacing: 2px; font-size: 1rem; }
+        .copy-btn { background: #111; color: #fff; border: 1px solid var(--label); padding: 8px 12px; font-size: 0.75rem; margin-top: -10px; margin-bottom: 15px; width: auto; display: inline-block; font-weight: bold; }
+        .bait-display { display: flex; flex-direction: column; align-items: center; margin-top: 25px; padding-top: 15px; border-top: 1px solid #222; }
+        .icons { font-size: 2.2rem; filter: brightness(1.8); letter-spacing: 15px; }
+        .mode-toggle { display: flex; width: 100%; gap: 10px; margin-bottom: 20px; }
+        .mode-toggle div { flex: 1; text-align: center; padding: 12px; border: 1px solid var(--label); cursor: pointer; font-size: 0.9rem; font-weight: bold; }
+        .active-mode { background: var(--label); border-color: #fff !important; color: #fff; }
     </style>
 </head>
 <body>
 
 <div id="terminal">
-    <h2>NIBBLE // v1.8.1</h2>
+    <h2>NIBBLE v1.8.2</h2>
     
     <div class="mode-toggle">
         <div id="m-cast" class="active-mode" onclick="setMode('cast')">CAST</div>
         <div id="m-catch" onclick="setMode('catch')">CATCH</div>
     </div>
 
-    <div class="hint">Secret Key</div>
-    <input type="password" id="hook" placeholder="HOOK" autocomplete="off">
+    <div class="hint">SECRET HOOK:</div>
+    <input type="password" id="hook" autocomplete="off">
     
-    <div class="hint">Data Stream</div>
-    <textarea id="dataStream" rows="4" placeholder="INPUT DATA" spellcheck="false"></textarea>
+    <div class="hint">DATA STREAM:</div>
+    <textarea id="dataStream" rows="4" spellcheck="false"></textarea>
     
     <div style="text-align: right;">
-        <div class="copy-btn" onclick="copyData()">[ COPY TO CLIPBOARD ]</div>
+        <div class="copy-btn" onclick="copyData()">COPY DATA</div>
     </div>
 
-    <button onclick="process()">RUN NIBBLE DATA</button>
+    <button onclick="process()">NIBBLE DATA</button>
 
     <div class="bait-display">
         <div class="icons" id="baitIcons"></div>
-        <div class="utc-time" id="utcDisplay">UTC SYNC: --:--</div>
     </div>
 </div>
 
@@ -63,13 +60,11 @@
     }
 
     function getSalt() {
-        const now = new Date();
-        const utcHour = now.getUTCHours();
+        const utcHour = new Date().getUTCHours();
         const salts = ['🐟','🐡','🐠','🦐','🐙','🦑','🦀','🐚','🐬','🐳','🐋','🦈'];
         return { 
             val: (utcHour + 5) * 3, 
-            icons: [salts[utcHour % 12], salts[(utcHour + 1) % 12]],
-            time: now.toISOString().substring(11, 16)
+            icons: [salts[utcHour % 12], salts[(utcHour + 1) % 12]]
         };
     }
 
@@ -82,10 +77,12 @@
     function copyData() {
         const ds = document.getElementById('dataStream');
         ds.select();
-        document.execCommand('copy');
+        ds.setSelectionRange(0, 99999); 
+        navigator.clipboard.writeText(ds.value);
         const btn = document.querySelector('.copy-btn');
-        btn.innerText = "[ COPIED ]";
-        setTimeout(() => btn.innerText = "[ COPY TO CLIPBOARD ]", 2000);
+        btn.innerText = "COPIED";
+        btn.style.borderColor = "#fff";
+        setTimeout(() => { btn.innerText = "COPY DATA"; btn.style.borderColor = "var(--label)"; }, 2000);
     }
 
     function process() {
@@ -130,9 +127,7 @@
     }
 
     function updateIcons() {
-        const salt = getSalt();
-        document.getElementById('baitIcons').innerText = salt.icons.join(' ');
-        document.getElementById('utcDisplay').innerText = "UTC SYNC: " + salt.time;
+        document.getElementById('baitIcons').innerText = getSalt().icons.join(' ');
     }
 
     updateIcons();
