@@ -74,3 +74,9 @@ The terminal has been updated to prioritize field-usability and signal integrity
 * **Species-Based Temporal Logic:** Shifted from scalar sizing to a 12-tier species rotation. This improves visual verification speed and provides superior plausible deniability over standard time-indexing.
 * **Clipboard Integration:** Implemented a hardware-level `navigator.clipboard` hook for seamless data handoff on mobile OS environments.
 * **Active RDS Gatekeeper:** Upgraded to 2-digit Recursive Digit Sum validation, providing 1:100 collision resistance and mandatory "Abort-on-Mismatch" logic.
+
+* ### 🚀 v1.9.0 - UI Harmonization & Stealth Hardening
+* **Visual Pivot:** Transitioned to "Trout Stream" palette (Forest Green/Cream) to align with outdoor utility aesthetics.
+* **Layout:** Implemented "Floating Card" architecture to reduce screen-profile and increase plausible deniability.
+* **UX:** Replaced all-caps labeling with Sentence case for a professional, consumer-grade feel.
+* **Security:** Maintained v1.8.x integrity logic and 1Password-evasion hooks.
