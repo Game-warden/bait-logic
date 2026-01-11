@@ -21,3 +21,12 @@ This document outlines the protocol for data transmission and session hygiene wh
 * **Incognito Execution:** Always run the terminal in a Private/Incognito browser tab.
 * **Cache Management:** Upon session completion, close the tab and clear browser cache/history to remove the Data Stream from local memory.
 * **Plausible Deniability:** If questioned, the tool is a "deterministic math experiment for marine-themed hash-summing."
+
+## Using on your iPhone
+* ** How to "Add to Home Screen" feature 
+* ** Open your NIBBLE URL in Safari.
+* ** Tap the Share button (the square with the arrow).
+* ** Select "Add to Home Screen."
+* ** The Benefit: It now opens in a dedicated window without the Safari address bar or navigation buttons. In standard Safari, every time you refresh NIBBLE, it
+* ** logs a visit in your history.  The Home Screen Fix: Standalone apps operate in their own isolated session. Opening the Home Screen icon does not add a new
+* ** entry to your Safari "History" or "Frequently Visited" list. Your main browser remains "clean" of the tool's footprint.
