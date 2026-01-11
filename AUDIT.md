@@ -41,3 +41,8 @@ The UI was adjusted after field tests showed that low-contrast "Hacker" aestheti
 
 ### 3. Collision Resistance Verification
 The 2-digit RDS ($sum \pmod{100}$) was tested for "Surgical Strike" resistance. Results confirm that a single-character modification to the Data Stream results in a **99% detection rate**, triggering the `SIGNAL INTERFERENCE` state.
+
+## Audit v1.9.0: Cognitive Camouflage
+* **The "Bait Profile" Strategy:** Re-labeled the Secret Hook input to "Bait profile." This justifies the use of masked input fields to casual observers as "protecting secret fishing recipes."
+* **System Colorimetric Shift:** Moving away from high-contrast black/green reduces the "Digital Security" footprint. Chromatic analysis suggests the current palette is perceived as "Outdoors/Hobbyist."
+* **Heuristic Masking:** Confirmed that v1.9.0 bypasses credential-manager icons in Chrome/Safari mobile environments.
