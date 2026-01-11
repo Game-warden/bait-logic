@@ -30,3 +30,6 @@ This document outlines the protocol for data transmission and session hygiene wh
 * ** The Benefit: It now opens in a dedicated window without the Safari address bar or navigation buttons. In standard Safari, every time you refresh NIBBLE, it
 * ** logs a visit in your history.  The Home Screen Fix: Standalone apps operate in their own isolated session. Opening the Home Screen icon does not add a new
 * ** entry to your Safari "History" or "Frequently Visited" list. Your main browser remains "clean" of the tool's footprint.
+
+* **Step 3 (Bait Profile):** Enter the shared Secret Hook into the 'Bait profile' field. The dots are hidden to protect your unique setup.
+* **Step 6 (Integrity):** If 'SIGNAL INTERFERENCE' appears, check that your Bait profile and the species icons match the sender.
