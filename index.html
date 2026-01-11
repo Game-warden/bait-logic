@@ -3,218 +3,112 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>NIBBLE v1.7.7</title>
+    <title>NIBBLE v1.8.0</title>
     <style>
-        :root { --cyan: #22d3ee; --neon: #00ff41; --bg: #050505; --panel: #161616; --text: #ececec; }
-        body { font-family: -apple-system, system-ui, sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 20px; }
-        .app-container { max-width: 440px; margin: 0 auto; display: flex; flex-direction: column; min-height: 94vh; }
-        
-        .header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 30px; }
-        .logo { font-weight: 900; font-size: 28px; letter-spacing: -1.5px; color: var(--cyan); line-height: 1; }
-        .version { font-size: 10px; color: #333; letter-spacing: 1px; }
-
-        .toggle-container { display: flex; background: #111; border-radius: 14px; padding: 4px; margin-bottom: 25px; border: 1px solid #222; }
-        .toggle-btn { flex: 1; padding: 12px; border: none; background: transparent; color: #444; border-radius: 10px; font-weight: 700; font-size: 12px; cursor: pointer; text-transform: uppercase; }
-        .toggle-btn.active { background: #222; color: var(--cyan); }
-
-        .field-group { margin-bottom: 22px; }
-        label { display: block; font-size: 9px; text-transform: uppercase; color: #555; margin-bottom: 8px; font-weight: 800; letter-spacing: 1px; }
-        .field-note { font-size: 9px; color: #444; margin-top: 6px; letter-spacing: 0.3px; line-height: 1.2; }
-        
-        input, textarea { width: 100%; padding: 16px; background: #000; border: 1px solid #222; color: #fff; border-radius: 12px; font-size: 16px; box-sizing: border-box; outline: none; transition: 0.3s; }
-        input:focus, textarea:focus { border-color: var(--cyan); background: #050505; }
-
-        .main-btn { width: 100%; padding: 18px; background: var(--cyan); color: #000; border: none; font-weight: 900; border-radius: 12px; cursor: pointer; text-transform: uppercase; margin-top: 10px; font-size: 14px; letter-spacing: 1px; }
-        
-        .output-card { background: var(--panel); border: 1px solid #222; border-radius: 16px; padding: 20px; margin-top: 30px; position: relative; overflow: hidden; }
-        .copy-btn { position: absolute; top: 0; right: 0; font-size: 9px; color: var(--cyan); background: #1a1a1a; padding: 12px 18px; border-left: 1px solid #222; border-bottom: 1px solid #222; font-weight: 900; cursor: pointer; z-index: 10; letter-spacing: 1px; }
-        .out-text { font-family: "SF Mono", "Fira Code", monospace; font-size: 14px; color: var(--neon); word-break: break-all; min-height: 65px; padding-top: 15px; line-height: 1.5; transition: 0.3s; }
-        
-        .status-bar { display: flex; justify-content: space-between; align-items: center; margin-top: 25px; padding-top: 15px; border-top: 1px solid #222; font-size: 10px; }
-        .nibble-tag { color: #444; font-weight: 700; letter-spacing: 1px; }
-        .nibble-val { color: var(--cyan); font-weight: 900; font-size: 16px; font-family: monospace; }
-        
-        .bait-tray-container { margin-top: auto; text-align: center; padding: 20px 0; }
-        .bait-controls { display: flex; align-items: center; justify-content: center; gap: 20px; }
-        .step-btn { background: transparent; border: 1px solid #111; color: #333; border-radius: 50%; width: 32px; height: 32px; cursor: pointer; font-size: 18px; display: flex; align-items: center; justify-content: center; transition: 0.2s; }
-        .step-btn:active { border-color: var(--cyan); color: var(--cyan); }
-        .bait-display { font-size: 16px; filter: grayscale(100%); opacity: 0.4; letter-spacing: 4px; transition: 0.3s; }
+        :root { --glow: #00ff41; --bg: #050505; }
+        body { background: var(--bg); color: var(--glow); font-family: 'Courier New', monospace; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0; overflow: hidden; }
+        #terminal { width: 90%; max-width: 400px; border: 1px solid var(--glow); padding: 20px; box-shadow: 0 0 15px rgba(0, 255, 65, 0.2); }
+        h2 { text-align: center; font-size: 1.2rem; margin-top: 0; letter-spacing: 2px; }
+        textarea, input { width: 100%; background: transparent; border: 1px solid #333; color: var(--glow); padding: 10px; margin: 10px 0; box-sizing: border-box; font-family: inherit; font-size: 16px; outline: none; }
+        textarea:focus, input:focus { border-color: var(--glow); }
+        .controls { display: flex; justify-content: space-between; margin-bottom: 10px; }
+        button { background: var(--glow); color: black; border: none; padding: 12px; width: 100%; font-weight: bold; cursor: pointer; text-transform: uppercase; }
+        .bait-display { display: flex; justify-content: center; gap: 15px; margin-top: 15px; font-size: 1.2rem; opacity: 0.7; }
+        .mode-toggle { display: flex; width: 100%; gap: 5px; margin-bottom: 10px; }
+        .mode-toggle div { flex: 1; text-align: center; padding: 8px; border: 1px solid #333; cursor: pointer; font-size: 0.8rem; }
+        .active-mode { background: #111; border-color: var(--glow) !important; color: white; }
     </style>
 </head>
 <body>
 
-<div class="app-container">
-    <div class="header">
-        <div class="logo">NIBBLE</div>
-        <div class="version">V1.7.7 ELITE</div>
+<div id="terminal">
+    <h2>NIBBLE v1.8.0</h2>
+    
+    <div class="mode-toggle">
+        <div id="m-cast" class="active-mode" onclick="setMode('cast')">CAST</div>
+        <div id="m-catch" onclick="setMode('catch')">CATCH</div>
     </div>
 
-    <div class="toggle-container">
-        <button id="btnEnc" class="toggle-btn active" onclick="setMode('encode')">CAST</button>
-        <button id="btnDec" class="toggle-btn" onclick="setMode('decode')">CATCH</button>
-    </div>
+    <input type="password" id="hook" placeholder="SHARED HOOK" autocomplete="off">
+    <textarea id="dataStream" rows="4" placeholder="DATA STREAM"></textarea>
+    
+    <button onclick="process()">NIBBLE DATA</button>
 
-    <div class="field-group">
-        <label>Shared Hook</label>
-        <input type="password" id="mKey" placeholder="Formula..." autocomplete="off">
-        <div class="field-note">**DO:** Use unique phrases. **DON'T:** Leave empty or use common words.</div>
-    </div>
-
-    <div class="field-group">
-        <label>Data Stream</label>
-        <textarea id="mainIn" rows="4" placeholder="Message content..."></textarea>
-        <div class="field-note">**DO:** Be concise. **DON'T:** Include real names or identifiable locations.</div>
-    </div>
-
-    <input type="hidden" id="salt" value="0">
-
-    <button class="main-btn" onclick="runProcess()">Nibble Data</button>
-
-    <div class="output-card">
-        <div class="copy-btn" onclick="copyText()" id="copyLabel">COPY</div>
-        <div class="out-text" id="outText">WAITING FOR CAST...</div>
-        
-        <div class="status-bar">
-            <span class="nibble-tag">VERIFICATION NIBBLE</span>
-            <span class="nibble-val" id="authDigit">-</span>
-        </div>
-    </div>
-
-    <div class="bait-tray-container">
-        <label style="margin-bottom: 12px; opacity: 0.3; font-size: 8px;">Live Bait (Salt Adjust)</label>
-        <div class="bait-controls">
-            <button class="step-btn" onclick="adjBait(-1)">–</button>
-            <div class="bait-display" id="bait-display"></div>
-            <button class="step-btn" onclick="adjBait(1)">+</button>
-        </div>
-    </div>
+    <div class="bait-display" id="baitIcons"></div>
 </div>
 
 <script>
-const ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-const PRE = ["!", "@", "#"];
-let currentMode = 'encode';
-let currentSalt = new Date().getUTCHours();
+    let currentMode = 'cast';
 
-function updateBaitUI() {
-    document.getElementById('salt').value = currentSalt;
-    const big = Math.floor(currentSalt / 5);
-    const small = currentSalt % 5;
-    document.getElementById('bait-display').innerHTML = "🦈".repeat(big) + "🐟".repeat(small);
-    document.getElementById('bait-display').style.opacity = "0.8";
-    setTimeout(() => { document.getElementById('bait-display').style.opacity = "0.4"; }, 300);
-}
-
-function adjBait(n) {
-    currentSalt = (currentSalt + n + 24) % 24;
-    updateBaitUI();
-}
-
-function setMode(m) {
-    currentMode = m;
-    document.getElementById('btnEnc').className = 'toggle-btn' + (m === 'encode' ? ' active' : '');
-    document.getElementById('btnDec').className = 'toggle-btn' + (m === 'decode' ? ' active' : '');
-    document.getElementById('mainIn').value = "";
-    document.getElementById('outText').style.color = "var(--neon)";
-    document.getElementById('outText').innerText = m === 'encode' ? "WAITING FOR CAST..." : "WAITING FOR CATCH...";
-    document.getElementById('authDigit').innerText = "-";
-}
-
-function getShiftedAlpha(key, salt) {
-    let sum = 0;
-    const combined = (key + salt.toString()).toUpperCase().replace(/[^A-Z0-9]/g, '');
-    for(let i=0; i<combined.length; i++) {
-        let val = ALPHABET.indexOf(combined[i]);
-        sum += (val === -1 ? parseInt(combined[i]) || 0 : val + 1);
+    function setMode(m) {
+        currentMode = m;
+        document.getElementById('m-cast').className = m === 'cast' ? 'active-mode' : '';
+        document.getElementById('m-catch').className = m === 'catch' ? 'active-mode' : '';
+        document.getElementById('dataStream').value = '';
     }
-    let shift = sum % 26;
-    return ALPHABET.substring(shift) + ALPHABET.substring(0, shift);
-}
 
-function nibbleMath(s) {
-    let curr = s.toString().replace(/[^0-9]/g, '');
-    while (curr.length > 1) {
+    function getSalt() {
+        const utcHour = new Date().getUTCHours();
+        const salts = ['🐟','🐡','🐠','🦐','🐙','🦑','🦀','🐚','🐬','🐳','🐋','🦈'];
+        return { 
+            val: (utcHour + 1) * 7, 
+            icons: [salts[utcHour % 12], salts[(utcHour + 1) % 12]] 
+        };
+    }
+
+    function rds(str) {
         let sum = 0;
-        for(let char of curr) sum += parseInt(char);
-        curr = sum.toString();
+        for (let i = 0; i < str.length; i++) sum += str.charCodeAt(i);
+        return (sum % 100).toString().padStart(2, '0'); // 99% 2-digit fix
     }
-    return curr || "0";
-}
 
-function runProcess() {
-    const input = document.getElementById('mainIn').value.trim();
-    const key = document.getElementById('mKey').value;
-    const salt = document.getElementById('salt').value;
+    function process() {
+        const hook = document.getElementById('hook').value;
+        const input = document.getElementById('dataStream').value.trim();
+        const salt = getSalt();
+        const saltVal = salt.val;
 
-    if(!key) {
-        alert("CRITICAL: Shared Hook required for secure cast.");
-        return;
-    }
-    
-    const shiftedAlpha = getShiftedAlpha(key, salt);
-    if(!input) return;
+        if (!hook || !input) return;
 
-    if (currentMode === 'encode') {
-        let un = "";
-        input.split(/\s+/).forEach(word => {
-            let clean = word.toUpperCase().replace(/[^A-Z0-9]/g, '');
-            if(!clean) return;
-            let res = "0"; 
-            for(let c of clean) {
-                if(/[0-9]/.test(c)) res += "*" + c;
-                else {
-                    let idx = shiftedAlpha.indexOf(c);
-                    let t = Math.floor(idx / 9);
-                    let v = (idx % 9) + 1;
-                    res += PRE[t] + v;
-                }
+        if (currentMode === 'cast') {
+            let encoded = "";
+            for (let i = 0; i < input.length; i++) {
+                let charCode = input.charCodeAt(i) + saltVal + hook.length;
+                let symbol = (i % 3 === 0) ? '!' : (i % 3 === 1) ? '@' : '#';
+                encoded += symbol + charCode.toString(16);
             }
-            un += res + " ";
-        });
-        document.getElementById('outText').innerText = un.trim();
-        document.getElementById('authDigit').innerText = nibbleMath(key.toUpperCase() + salt + input.toUpperCase());
-    } else {
-        let dec = "";
-        input.split(/\s+/).forEach(code => {
-            let word = ""; let i = 1;
-            while(i < code.length) {
-                let p = code[i]; let v = code[i+1];
-                if(p === "*") { word += v; i+=2; }
-                else {
-                    let tIdx = PRE.indexOf(p);
-                    let cIdx = (tIdx * 9) + (parseInt(v) - 1);
-                    word += (shiftedAlpha[cIdx] || ''); i += 2;
-                }
+            const nibble = rds(encoded + hook + saltVal);
+            document.getElementById('dataStream').value = nibble + encoded;
+        } else {
+            const providedNibble = input.substring(0, 2);
+            const body = input.substring(2);
+            const checkNibble = rds(body + hook + saltVal);
+
+            if (providedNibble !== checkNibble) {
+                document.getElementById('dataStream').value = "SIGNAL INTERFERENCE: INTEGRITY FAILURE";
+                return;
             }
-            dec += word + " ";
-        });
-        document.getElementById('outText').innerText = dec.trim();
-        document.getElementById('authDigit').innerText = nibbleMath(key.toUpperCase() + salt + dec.trim().toUpperCase());
+
+            try {
+                let decoded = "";
+                let parts = body.split(/[!@#]/).filter(x => x);
+                parts.forEach(p => {
+                    let charCode = parseInt(p, 16) - saltVal - hook.length;
+                    decoded += String.fromCharCode(charCode);
+                });
+                document.getElementById('dataStream').value = decoded;
+            } catch(e) {
+                document.getElementById('dataStream').value = "SIGNAL LOSS: DATA CORRUPT";
+            }
+        }
     }
-}
 
-function copyText() {
-    const text = document.getElementById('outText').innerText;
-    if(text.includes("WAITING") || text.includes("ACTION")) return;
-    
-    navigator.clipboard.writeText(text);
-    const label = document.getElementById('copyLabel');
-    const statusText = document.getElementById('outText');
-    
-    label.innerText = "COPIED";
-    
-    const originalText = statusText.innerText;
-    statusText.style.color = "#666";
-    statusText.innerText = "ACTION: Transmit via secure channel. Relay the Nibble separately. Clear app state after send.";
-    
-    setTimeout(() => { 
-        label.innerText = "COPY"; 
-        statusText.style.color = "var(--neon)";
-        statusText.innerText = originalText;
-    }, 4500);
-}
-
-window.onload = updateBaitUI;
+    function updateIcons() {
+        document.getElementById('baitIcons').innerText = getSalt().icons.join(' ');
+    }
+    updateIcons();
+    setInterval(updateIcons, 60000);
 </script>
+
 </body>
 </html>
