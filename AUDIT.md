@@ -16,3 +16,16 @@ Integrity is maintained via a recursive summation algorithm:
 
 **Security Impact:** This provides high-confidence tampering detection. If the Data Stream is altered, there is a statistical 90% probability that the resulting Nibble will not match the original, providing an immediate alert of data corruption or intercept."
 
+---
+## 🔄 Version 1.7.7 - Open Audit Transition
+
+**Date:** January 2026
+**Status:** MIT Licensed / Public Peer-Review Enabled
+
+### Changes:
+- **Licensing:** Formalized under MIT to allow for transparent third-party security audits.
+- **Identity Obfuscation:** Completed transition to anonymous developer profile (Ghost-Account protocol).
+- **Integrity Validation:** Refined RDS (Recursive Digit Sum) math to ensure a consistent 90% detection rate across all UTC time-salt rotations.
+
+### Security Posture:
+The current logic relies on **Computational Hardness** (via the Shared Hook) and **Temporal Entropy** (via the UTC Salt). Peer reviewers are encouraged to stress-test the substitution tiering for pattern leaks during hourly transitions.
