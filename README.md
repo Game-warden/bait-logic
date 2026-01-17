@@ -7,7 +7,15 @@
 By mapping temporal variables to marine species and utilizing CSS-based heuristic masking, Nibble provides a secure channel for data verification that is visually indistinguishable from a hobbyist fishing application.
 
 ---
+## Known Limitations & Field Resiliency
 
+As an experimental utility, **Nibble** prioritizes lightweight manual use over high-compute security. Users should be aware of the following:
+
+* **Temporal Boundaries:** Salt windows rotate precisely at `UTC % 2 == 0`. Users operating near the turn of an even hour should ensure their device clock is synchronized to prevent derivation errors.
+* **Integrity Checks:** The 2-digit RDS (Recursive Digit Sum) is a "human-readable" checksum. It is designed to catch 99% of accidental data corruption during manual transcription but is not resistant to a dedicated pre-image attack.
+* **Camouflage Layer:** The "Bait Guide" UI is a social engineering layer. It does not provide filesystem-level encryption; it is designed to reduce the "interest-profile" of the data during a visual audit.
+
+* 
 ## 🛠️ Core Features (v1.9.0)
 * **Plausible UI:** Optimized "Trout Stream" palette (Forest Green/Cream) for maximum environmental blending.
 * **Bait Profile Logic:** Secure alphanumeric masking of shared "hooks" to prevent shoulder-surfing and automated credential capture.
