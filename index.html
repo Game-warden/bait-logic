@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <title>Nibble</title>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Nibble | Field Log</title>
     <style>
         :root { --forest: #33691E; --cream: #FFF8E7; --bark: #5D4037; --bg: #F9F9F7; --border: #D1C7A7; }
         
@@ -14,6 +15,7 @@
             display: flex; align-items: center; justify-content: center; 
             height: 100vh; margin: 0; padding: 10px; box-sizing: border-box;
             -webkit-tap-highlight-color: transparent;
+            overscroll-behavior: none; /* Prevents web-page bounce on mobile */
         }
 
         #terminal { 
@@ -51,6 +53,7 @@
         .icons { font-size: 2.2rem; letter-spacing: 15px; margin-bottom: 8px; filter: sepia(0.3); }
         .version { font-size: 0.6rem; color: #B0A99A; letter-spacing: 1px; font-weight: 500; }
 
+        /* Anti-Autofill Ghosting */
         .hp-ghost { position: absolute; top: -1000px; left: -1000px; opacity: 0; }
     </style>
 </head>
@@ -67,10 +70,10 @@
     </div>
 
     <div class="hint">Bait profile:</div>
-    <input type="text" id="hid_190" class="stealth-input" spellcheck="false" autocomplete="new-password">
+    <input type="text" id="hid_190" class="stealth-input" spellcheck="false" autocomplete="new-password" placeholder="••••••••">
     
     <div class="hint">Data stream:</div>
-    <textarea id="dataStream" rows="4" spellcheck="false"></textarea>
+    <textarea id="dataStream" rows="4" spellcheck="false" placeholder="Awaiting telemetry..."></textarea>
     
     <div style="text-align: right;">
         <div class="copy-btn" onclick="copyData()">Copy to clipboard</div>
@@ -80,7 +83,7 @@
 
     <div class="bait-display">
         <div class="icons" id="baitIcons"></div>
-        <div class="version">v1.9.0</div>
+        <div class="version">FIELD LOG v1.9.0</div>
     </div>
 </div>
 
@@ -113,10 +116,11 @@
 
     async function copyData() {
         const ds = document.getElementById('dataStream');
+        if (!ds.value) return;
         try {
             await navigator.clipboard.writeText(ds.value);
             const btn = document.querySelector('.copy-btn');
-            btn.innerText = "Copied to clipboard";
+            btn.innerText = "✓ Copied";
             setTimeout(() => { btn.innerText = "Copy to clipboard"; }, 2000);
         } catch (err) {
             ds.select();
@@ -168,8 +172,22 @@
     function updateIcons() {
         document.getElementById('baitIcons').innerText = getSalt().icons.join(' ');
     }
+    
     updateIcons();
     setInterval(updateIcons, 60000);
+
+    // Register Service Worker for PWA Offline capability
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            const blob = new Blob([`
+                self.addEventListener('fetch', function(event) {
+                    event.respondWith(fetch(event.request));
+                });
+            `], { type: 'text/javascript' });
+            const url = URL.createObjectURL(blob);
+            navigator.serviceWorker.register(url);
+        });
+    }
 </script>
 
 </body>
