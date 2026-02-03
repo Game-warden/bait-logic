@@ -23,6 +23,11 @@ As an experimental utility, **Nibble** prioritizes lightweight manual use over h
 * **Integrity Shield:** 2-digit RDS ($sum \pmod{100}$) validation providing a 99% detection rate for data corruption or tampering.
 * **Credential Evasion:** Advanced "Ghost Input" logic to bypass 1Password and other browser extension heuristics.
 
+## Future Roadmap
+* While Nibble v1.9 is hard-coded with a Marine/Bait theme for visual camouflage in maritime environments, the underlying 'Shaping Engine' is theme-agnostic.
+* Future versions will support 'Skins' for Bird-Watching (ornithological data) and Amateur Radio (signal logs) to ensure the app matches the user's specific
+* environmental noise.
+*
 ---
 
 ## 📲 Deployment Protocol (Mobile)
