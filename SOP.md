@@ -1,4 +1,4 @@
-# 📖 Nibble Standard Operating Procedure (v1.9.0)
+# 📖 Nibble Standard Operating Procedure (v1.9.1)
 
 This document outlines the protocol for data transmission, session hygiene, and terminal installation for the Nibble field utility.
 
