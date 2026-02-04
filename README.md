@@ -1,4 +1,4 @@
-# 🎣 Nibble v1.9.0
+# 🎣 Nibble v1.9.1
 ### Project Status: Active / Stable (Trout Stream Build)
 
 ---
@@ -25,7 +25,7 @@ As an experimental utility, **Nibble** prioritizes lightweight manual use over h
 * **Camouflage Layer:** The "Bait Guide" UI is a social engineering layer. It does not provide filesystem-level encryption; it is designed to reduce the "interest-profile" of the data during a visual audit.
 
 * 
-## 🛠️ Core Features (v1.9.0)
+## 🛠️ Core Features (v1.9.1)
 * **Plausible UI:** Optimized "Trout Stream" palette (Forest Green/Cream) for maximum environmental blending.
 * **Bait Profile Logic:** Secure alphanumeric masking of shared "hooks" to prevent shoulder-surfing and automated credential capture.
 * **Temporal Sync:** Dynamic salt rotation derived from a 12-species marine cycle, updating every 120 minutes.
@@ -33,7 +33,7 @@ As an experimental utility, **Nibble** prioritizes lightweight manual use over h
 * **Credential Evasion:** Advanced "Ghost Input" logic to bypass 1Password and other browser extension heuristics.
 
 ## Future Roadmap
-* While Nibble v1.9 is hard-coded with a Marine/Bait theme for visual camouflage in maritime environments, the underlying 'Shaping Engine' is theme-agnostic.
+* While Nibble v1.9.1 is hard-coded with a Marine/Bait theme for visual camouflage in maritime environments, the underlying 'Shaping Engine' is theme-agnostic.
 * Future versions will support 'Skins' for Bird-Watching (ornithological data) and Amateur Radio (signal logs) to ensure the app matches the user's specific
 * environmental noise.
 * 
