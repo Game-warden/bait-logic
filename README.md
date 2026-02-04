@@ -27,7 +27,15 @@ As an experimental utility, **Nibble** prioritizes lightweight manual use over h
 * While Nibble v1.9 is hard-coded with a Marine/Bait theme for visual camouflage in maritime environments, the underlying 'Shaping Engine' is theme-agnostic.
 * Future versions will support 'Skins' for Bird-Watching (ornithological data) and Amateur Radio (signal logs) to ensure the app matches the user's specific
 * environmental noise.
-*
+* 
+* 🎨 Planned Camouflage (v2.0 Skins)
+* To further reduce the "Interest Profile" of the device, I'm working on toggles to mask the data entry as mundane activities:
+* 
+* [ ] Bird Watching Log: Masks "Sensitive Data" as common avian sightings.
+* 
+* [ ] Local Weather Monitoring: Masks entry fields as barometric and cloud-type data.
+* 
+* [ ] Warehouse Audit: Masks everything as boring SKU numbers and inventory counts.
 ---
 
 ## 📲 Deployment Protocol (Mobile)
