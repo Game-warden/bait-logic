@@ -1,6 +1,15 @@
 # 🎣 Nibble v1.9.0
 ### Project Status: Active / Stable (Trout Stream Build)
 
+---
+
+### 🛡️ LATEST UPDATE: v1.9.1 (Patch Notes)
+* **Terminology Alignment:** Refined field labels to "Bait Profile" and "Data Stream" to better reflect the camouflage aesthetic.
+* **OpSec Documentation:** Added clarification to `SOP.md` regarding **Temporal Salt Rotation** (addressing feedback from the r/selfhosted community audit).
+* **UI Polish:** Minor CSS adjustments to ensure the 'Boring UI' renders correctly across all mobile browsers (tested for field reliability).
+
+---
+
 ## 📡 Overview
 **Nibble** is a minimalist, deterministic data-encoding utility designed for field research and marine-themed hash-summing experiments. Version 1.9.0 focuses on **Cognitive Camouflage**, utilizing high-end outdoor utility aesthetics to ensure the tool remains unassuming in diverse operational environments.
 
@@ -28,14 +37,12 @@ As an experimental utility, **Nibble** prioritizes lightweight manual use over h
 * Future versions will support 'Skins' for Bird-Watching (ornithological data) and Amateur Radio (signal logs) to ensure the app matches the user's specific
 * environmental noise.
 * 
-* 🎨 Planned Camouflage (v2.0 Skins)
+##🎨 Planned Camouflage (v2.0 Skins)
 * To further reduce the "Interest Profile" of the device, I'm working on toggles to mask the data entry as mundane activities:
 * 
-* [ ] Bird Watching Log: Masks "Sensitive Data" as common avian sightings.
-* 
-* [ ] Local Weather Monitoring: Masks entry fields as barometric and cloud-type data.
-* 
-* [ ] Warehouse Audit: Masks everything as boring SKU numbers and inventory counts.
+*   **Bird Watching Log**: Masks "Sensitive Data" as common avian sightings.
+*   **Local Weather Monitoring**: Masks entry fields as barometric and cloud-type data.
+*   **Warehouse Audit**: Masks everything as boring SKU numbers and inventory counts.
 ---
 
 ## 📲 Deployment Protocol (Mobile)
