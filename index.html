@@ -15,7 +15,7 @@
             display: flex; align-items: center; justify-content: center; 
             height: 100vh; margin: 0; padding: 10px; box-sizing: border-box;
             -webkit-tap-highlight-color: transparent;
-            overscroll-behavior: none; /* Prevents web-page bounce on mobile */
+            overscroll-behavior: none; 
         }
 
         #terminal { 
@@ -53,7 +53,6 @@
         .icons { font-size: 2.2rem; letter-spacing: 15px; margin-bottom: 8px; filter: sepia(0.3); }
         .version { font-size: 0.6rem; color: #B0A99A; letter-spacing: 1px; font-weight: 500; }
 
-        /* Anti-Autofill Ghosting */
         .hp-ghost { position: absolute; top: -1000px; left: -1000px; opacity: 0; }
     </style>
 </head>
@@ -84,3 +83,98 @@
     <div class="bait-display">
         <div class="icons" id="baitIcons"></div>
         <div class="version">BAITLOGIC ENGINE v1.9.2</div>
+    </div>
+</div>
+
+<script>
+    let currentMode = 'cast';
+
+    function setMode(m) {
+        currentMode = m;
+        document.getElementById('m-cast').className = m === 'cast' ? 'active-mode' : '';
+        document.getElementById('m-catch').className = m === 'catch' ? 'active-mode' : '';
+        document.getElementById('dataStream').value = '';
+    }
+
+    function getSalt() {
+        const utcHour = new Date().getUTCHours();
+        const salts = ['🐟','🐡','🐠','🦐','🐙','🦑','🦀','🐚','🐬','🐳','🐋','🦈'];
+        const speciesIndex = Math.floor(utcHour / 2);
+        const nextIndex = (speciesIndex + 1) % 12;
+        return { 
+            val: (speciesIndex + 5) * 3, 
+            icons: [salts[speciesIndex], salts[nextIndex]]
+        };
+    }
+
+    function rds(str) {
+        let sum = 0;
+        for (let i = 0; i < str.length; i++) sum += str.charCodeAt(i);
+        return (sum % 100).toString().padStart(2, '0');
+    }
+
+    async function copyData() {
+        const ds = document.getElementById('dataStream');
+        if (!ds.value) return;
+        try {
+            await navigator.clipboard.writeText(ds.value);
+            const btn = document.querySelector('.copy-btn');
+            btn.innerText = "✓ Copied";
+            setTimeout(() => { btn.innerText = "Copy to clipboard"; }, 2000);
+        } catch (err) {
+            ds.select();
+            document.execCommand('copy');
+        }
+    }
+
+    function process() {
+        const hook = document.getElementById('hid_190').value;
+        const input = document.getElementById('dataStream').value.trim();
+        const salt = getSalt();
+        const saltVal = salt.val;
+
+        if (!hook || !input) return;
+
+        if (currentMode === 'cast') {
+            let encoded = "";
+            for (let i = 0; i < input.length; i++) {
+                let charCode = input.charCodeAt(i) + saltVal + hook.length;
+                let symbol = (i % 3 === 0) ? '!' : (i % 3 === 1) ? '@' : '#';
+                encoded += symbol + charCode.toString(16);
+            }
+            const nibble = rds(encoded + hook + saltVal);
+            document.getElementById('dataStream').value = nibble + encoded;
+        } else {
+            const providedNibble = input.substring(0, 2);
+            const body = input.substring(2);
+            const checkNibble = rds(body + hook + saltVal);
+
+            if (providedNibble !== checkNibble) {
+                document.getElementById('dataStream').value = "SIGNAL INTERFERENCE: INTEGRITY FAILURE";
+                return;
+            }
+
+            try {
+                let decoded = "";
+                let parts = body.split(/[!@#]/).filter(x => x);
+                parts.forEach(p => {
+                    let charCode = parseInt(p, 16) - saltVal - hook.length;
+                    decoded += String.fromCharCode(charCode);
+                });
+                document.getElementById('dataStream').value = decoded;
+            } catch(e) {
+                document.getElementById('dataStream').value = "SIGNAL LOSS: DATA CORRUPT";
+            }
+        }
+    }
+
+    function updateIcons() {
+        document.getElementById('baitIcons').innerText = getSalt().icons.join(' ');
+    }
+    
+    updateIcons();
+    setInterval(updateIcons, 60000);
+</script>
+
+</body>
+</html>
