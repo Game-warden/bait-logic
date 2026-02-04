@@ -1,16 +1,3 @@
-<!-- 
-PROJECT: NIBBLE (v1.9.1) 
-    Field Telemetry Utility 
-    ARCH: Zero-Dependency, Stateless, Vanilla JS 
-    PSEC PROFILE: Cognitive Camouflage / Forensic-Light
-
-TECHNICAL NOTES: 
-    Deterministic salt rotation: UTC % 2hr window. 
-    Data Shaping: Character-shift + Hex encoding + RDS Parity. 
-    No LocalStorage/SessionStorage to avoid physical forensic residue. 
-    CSS Masking via -webkit-text-security for input obfuscation. 
--->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -18,7 +5,7 @@ TECHNICAL NOTES:
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>Nibble | Field Log</title>
+    <title>BaitLogic | Field Log</title>
     <style>
         :root { --forest: #33691E; --cream: #FFF8E7; --bark: #5D4037; --bg: #F9F9F7; --border: #D1C7A7; }
         
@@ -75,7 +62,7 @@ TECHNICAL NOTES:
 <div class="hp-ghost"><input type="text" name="user"><input type="password" name="pass"></div>
 
 <div id="terminal">
-    <h2>Nibble</h2>
+    <h2>BaitLogic</h2>
     
     <div class="mode-toggle">
         <div id="m-cast" class="active-mode" onclick="setMode('cast')">Cast</div>
@@ -92,116 +79,8 @@ TECHNICAL NOTES:
         <div class="copy-btn" onclick="copyData()">Copy to clipboard</div>
     </div>
 
-    <button onclick="process()">Run nibble logic</button>
+    <button onclick="process()">Run field logic</button>
 
     <div class="bait-display">
         <div class="icons" id="baitIcons"></div>
-        <div class="version">FIELD LOG v1.9.1</div>
-    </div>
-</div>
-
-<script>
-    let currentMode = 'cast';
-
-    function setMode(m) {
-        currentMode = m;
-        document.getElementById('m-cast').className = m === 'cast' ? 'active-mode' : '';
-        document.getElementById('m-catch').className = m === 'catch' ? 'active-mode' : '';
-        document.getElementById('dataStream').value = '';
-    }
-
-    function getSalt() {
-        const utcHour = new Date().getUTCHours();
-        const salts = ['🐟','🐡','🐠','🦐','🐙','🦑','🦀','🐚','🐬','🐳','🐋','🦈'];
-        const speciesIndex = Math.floor(utcHour / 2);
-        const nextIndex = (speciesIndex + 1) % 12;
-        return { 
-            val: (speciesIndex + 5) * 3, 
-            icons: [salts[speciesIndex], salts[nextIndex]]
-        };
-    }
-
-    function rds(str) {
-        let sum = 0;
-        for (let i = 0; i < str.length; i++) sum += str.charCodeAt(i);
-        return (sum % 100).toString().padStart(2, '0');
-    }
-
-    async function copyData() {
-        const ds = document.getElementById('dataStream');
-        if (!ds.value) return;
-        try {
-            await navigator.clipboard.writeText(ds.value);
-            const btn = document.querySelector('.copy-btn');
-            btn.innerText = "✓ Copied";
-            setTimeout(() => { btn.innerText = "Copy to clipboard"; }, 2000);
-        } catch (err) {
-            ds.select();
-            document.execCommand('copy');
-        }
-    }
-
-    function process() {
-        const hook = document.getElementById('hid_190').value;
-        const input = document.getElementById('dataStream').value.trim();
-        const salt = getSalt();
-        const saltVal = salt.val;
-
-        if (!hook || !input) return;
-
-        if (currentMode === 'cast') {
-            let encoded = "";
-            for (let i = 0; i < input.length; i++) {
-                let charCode = input.charCodeAt(i) + saltVal + hook.length;
-                let symbol = (i % 3 === 0) ? '!' : (i % 3 === 1) ? '@' : '#';
-                encoded += symbol + charCode.toString(16);
-            }
-            const nibble = rds(encoded + hook + saltVal);
-            document.getElementById('dataStream').value = nibble + encoded;
-        } else {
-            const providedNibble = input.substring(0, 2);
-            const body = input.substring(2);
-            const checkNibble = rds(body + hook + saltVal);
-
-            if (providedNibble !== checkNibble) {
-                document.getElementById('dataStream').value = "SIGNAL INTERFERENCE: INTEGRITY FAILURE";
-                return;
-            }
-
-            try {
-                let decoded = "";
-                let parts = body.split(/[!@#]/).filter(x => x);
-                parts.forEach(p => {
-                    let charCode = parseInt(p, 16) - saltVal - hook.length;
-                    decoded += String.fromCharCode(charCode);
-                });
-                document.getElementById('dataStream').value = decoded;
-            } catch(e) {
-                document.getElementById('dataStream').value = "SIGNAL LOSS: DATA CORRUPT";
-            }
-        }
-    }
-
-    function updateIcons() {
-        document.getElementById('baitIcons').innerText = getSalt().icons.join(' ');
-    }
-    
-    updateIcons();
-    setInterval(updateIcons, 60000);
-
-    // Register Service Worker for PWA Offline capability
-    if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-            const blob = new Blob([`
-                self.addEventListener('fetch', function(event) {
-                    event.respondWith(fetch(event.request));
-                });
-            `], { type: 'text/javascript' });
-            const url = URL.createObjectURL(blob);
-            navigator.serviceWorker.register(url);
-        });
-    }
-</script>
-
-</body>
-</html>
+        <div class="version">BAITLOGIC ENGINE v1.
