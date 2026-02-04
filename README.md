@@ -1,88 +1,65 @@
-# 🎣 Nibble v1.9.1
-### Project Status: Active / Stable (Trout Stream Build)
+# 🎣 BaitLogic (v1.9.2)
+### **The Stateless Obfuscation Engine for Field Operations**
 
 ---
+
+> **Identity Update:** Formerly known as 'Nibble.' Rebranded to **BaitLogic** to align with core repository naming and to distinguish this project from unrelated commercial mobile applications.
+
 ---
 
-### 🛡️ LATEST UPDATE: v1.9.1 (Patch Notes)
-* **Terminology Alignment:** Refined field labels to **"Bait Profile"** and **"Data Stream"** to better reflect the camouflage aesthetic.
-* **OpSec Documentation:** Updated `SOP.md` to clarify the **Temporal Salt Rotation** logic.
-* **Community Recognition:** This update was released in direct response to a technical audit from the **r/selfhosted** community.
-* **Special thanks** to the auditors there for helping refine field terminology for better operational clarity.
+### 🛡️ LATEST UPDATE: v1.9.2 (Patch Notes)
+* **Full Rebrand:** Transitioned all internal logic and documentation to the **BaitLogic** core.
+* **Engine vs. Lure Architecture:** Refactored documentation to distinguish between the encryption engine and the UI skins.
+* **Community Recognition:** v1.9.1/v1.9.2 updates were released in direct response to a technical audit from the **r/selfhosted** community. Special thanks to the auditors there for refining our field terminology.
 
 ---
 
 ### 🧠 Design Rationale (The 'Why')
 
-* Nibble is often misunderstood as a "simple" app because its complexity is intentionally hidden to maintain its profile. 
-*
-* **Why No Database?** Databases leave forensic trails (logs, swap files, metadata). Nibble is designed to be **Stateless**.
-* Once the browser tab is closed, the 'vault' effectively ceases to exist in local memory.
-* 
-* **Why the 'Boring' UI?** This is **Cognitive Camouflage.** In many field scenarios, the presence of a known 'security app'
-* or 'vault' is itself a red flag. We hide sensitive data operations behind the guise of mundane technical logging.
-* 
-* **Why One HTML File?** **Zero Dependencies.** There is no `npm install`, no Docker image to pull, and no server-side
-* vulnerabilities to exploit. It leverages the browser's native **Web Crypto API** for hardware-level security without the overhead.
-* 
-* **Why No Database?** Databases leave forensic trails (logs, swap files, metadata). Nibble is designed to be **Stateless**. Once the browser tab is closed, the 'vault' effectively ceases to exist in local memory.
-*
-* **Why the 'Boring' UI?** This is **Cognitive Camouflage.** In many field scenarios, the presence of a known 'security app' or 'vault' is itself a red flag. We hide sensitive data operations behind the guise of mundane technical logging.
-*
-* **Why One HTML File?** **Zero Dependencies.** There is no `npm install`, no Docker image to pull, and no server-side vulnerabilities to exploit. It leverages the browser's native **Web Crypto API** for hardware-level security without the overhead.
+* **Why No Database?** Databases leave forensic trails (logs, swap files, metadata). BaitLogic is **Stateless**. Once the browser tab is closed, the "vault" effectively ceases to exist in local memory.
+* **Why the 'Boring' UI?** This is **Cognitive Camouflage.** In field scenarios, a "security app" icon is a red flag. We hide sensitive operations behind the guise of mundane hobbyist data logging.
+* **Why One HTML File?** **Zero Dependencies.** No `npm install`, no Docker containers, and no server-side vulnerabilities. It leverages the browser’s native **Web Crypto API** for hardware-level security without a digital footprint.
 
 ---
 
-## 📡 Overview
-**Nibble** is a minimalist, deterministic data-encoding utility designed for field research and marine-themed hash-summing experiments. Version 1.9.0 focuses on **Cognitive Camouflage**, utilizing high-end outdoor utility aesthetics to ensure the tool remains unassuming in diverse operational environments.
+## ⚙️ The Engine vs. The Lure
+BaitLogic is designed as a modular framework. While the current build utilizes the **"Angler"** skin, the underlying engine is UI-agnostic.
 
-By mapping temporal variables to marine species and utilizing CSS-based heuristic masking, Nibble provides a secure channel for data verification that is visually indistinguishable from a hobbyist fishing application.
+| Build Style | UI Theme (The "Lure") | Ideal Environment |
+| :--- | :--- | :--- |
+| **Angler (Current)** | Fishing/Tackle Logs | Rural, Maritime, or Outdoor Recreation. |
+| **Ornithology (WIP)** | Bird Migration Stats | Research or Scientific Field Work. |
+| **Inventory (WIP)** | Warehouse SKU/Part Audits | Industrial or Urban Environments. |
 
 ---
-## Known Limitations & Field Resiliency
 
-As an experimental utility, **Nibble** prioritizes lightweight manual use over high-compute security. Users should be aware of the following:
+## 📡 Operational Overview
+**BaitLogic** is a minimalist, deterministic data-encoding utility. It maps temporal variables to specific "Species" and utilizes CSS-based heuristic masking to ensure data entry is visually indistinguishable from a hobbyist fishing log.
 
-* **Temporal Boundaries:** Salt windows rotate precisely at `UTC % 2 == 0`. Users operating near the turn of an even hour should ensure their device clock is synchronized to prevent derivation errors.
-* **Integrity Checks:** The 2-digit RDS (Recursive Digit Sum) is a "human-readable" checksum. It is designed to catch 99% of accidental data corruption during manual transcription but is not resistant to a dedicated pre-image attack.
-* **Camouflage Layer:** The "Bait Guide" UI is a social engineering layer. It does not provide filesystem-level encryption; it is designed to reduce the "interest-profile" of the data during a visual audit.
+---
 
-* 
-## 🛠️ Core Features (v1.9.1)
-* **Plausible UI:** Optimized "Trout Stream" palette (Forest Green/Cream) for maximum environmental blending.
-* **Bait Profile Logic:** Secure alphanumeric masking of shared "hooks" to prevent shoulder-surfing and automated credential capture.
+## 🛠️ Core Features
+* **Plausible UI:** "Trout Stream" palette (Forest Green/Cream) for maximum environmental blending.
+* **Bait Profile Logic:** Secure alphanumeric masking of shared keys to prevent shoulder-surfing.
 * **Temporal Sync:** Dynamic salt rotation derived from a 12-species marine cycle, updating every 120 minutes.
-* **Integrity Shield:** 2-digit RDS ($sum \pmod{100}$) validation providing a 99% detection rate for data corruption or tampering.
-* **Credential Evasion:** Advanced "Ghost Input" logic to bypass 1Password and other browser extension heuristics.
+* **Integrity Shield:** 2-digit RDS ($sum \pmod{100}$) validation providing a 99% detection rate for data corruption.
+* **Credential Evasion:** Advanced "Ghost Input" logic to bypass browser extension heuristics (1Password, Bitwarden).
 
-## Future Roadmap
-* While Nibble v1.9.1 is hard-coded with a Marine/Bait theme for visual camouflage in maritime environments, the underlying 'Shaping Engine' is theme-agnostic.
-* Future versions will support 'Skins' for Bird-Watching (ornithological data) and Amateur Radio (signal logs) to ensure the app matches the user's specific
-* environmental noise.
-* 
-##🎨 Planned Camouflage (v2.0 Skins)
-* To further reduce the "Interest Profile" of the device, I'm working on toggles to mask the data entry as mundane activities:
-* 
-*   **Bird Watching Log**: Masks "Sensitive Data" as common avian sightings.
-*   **Local Weather Monitoring**: Masks entry fields as barometric and cloud-type data.
-*   **Warehouse Audit**: Masks everything as boring SKU numbers and inventory counts.
 ---
 
 ## 📲 Deployment Protocol (Mobile)
-To ensure the terminal runs as a standalone utility without browser footprint:
-
-1. Open your deployment URL in **Safari** on iOS.
-2. Tap the **Share** icon (square with up arrow).
-3. Select **"Add to Home Screen."**
-4. Rename the utility to **"Bait Guide"** or **"Tackle Log"** for local obfuscation.
-5. Launch the app from your home screen. This removes the URL bar and browser history tracking.
+To run as a standalone utility without a browser footprint:
+1.  Open your deployment URL in **Safari** (iOS) or **Chrome** (Android).
+2.  Select **"Add to Home Screen."**
+3.  Rename the utility to **"Bait Guide"** or **"Tackle Log"**.
+4.  Launch from the home screen to remove the URL bar and browser history tracking.
 
 ---
 
 ## 🌊 Operational Procedure
 
 ### 1. Synchronizing the "Live Bait"
-The terminal logic rotates every 2 hours based on UTC time. Refer to the schedule below to verify synchronization.
+The terminal logic rotates every 2 hours based on UTC time.
 
 | UTC Window | Active Species | Buffer/Next |
 | :--- | :--- | :--- |
@@ -99,41 +76,29 @@ The terminal logic rotates every 2 hours based on UTC time. Refer to the schedul
 | **20:00 - 22:00** | 🐋 Humpback | 🦈 Shark |
 | **22:00 - 00:00** | 🦈 Shark | 🐟 Fish |
 
-
-
 ### 2. The "Cast & Catch" Sequence
-**To Send Data (Cast):**
-1. Set the toggle to **Cast**.
-2. Enter the shared secret into the **Bait profile** field.
-3. Input your message into the **Data stream**.
-4. Tap **Run nibble logic**.
-5. Use **Copy to clipboard** and transmit the resulting code.
-
-**To Receive Data (Catch):**
-1. Set the toggle to **Catch**.
-2. Ensure the identical **Bait profile** is entered.
-3. Paste the received code into the **Data stream**.
-4. Tap **Run nibble logic** to reveal the original data.
-
-### 🛡️ Integrity Validation
-The first two characters of any generated code represent the **Verification Nibble**. 
-* If the terminal displays **"SIGNAL INTERFERENCE: INTEGRITY FAILURE,"** the data was corrupted in transit, or there is a mismatch in the Bait profile or Species window. 
-* **Protocol:** Do not attempt to guess the data. Request a "Re-Cast."
+* **To Send (Cast):** Set toggle to **Cast** -> Enter **Bait Profile** (Secret) -> Enter **Data Stream** -> **Run Logic**.
+* **To Receive (Catch):** Set toggle to **Catch** -> Match **Bait Profile** -> Paste Code -> **Run Logic**.
 
 ---
 
-## 🔍 Development & Audit History
+## 🛡️ Integrity Validation
+The first two characters of any generated code represent the **Verification Nibble**. 
+* If the terminal displays **"SIGNAL INTERFERENCE: INTEGRITY FAILURE,"** the data was corrupted in transit or there is a mismatch in the Bait profile or Species window. 
+* **Protocol:** Request a "Re-Cast."
 
-### v1.9.0: The "Cognitive Camouflage" Update
-* **Visual Pivot:** Replaced "Matrix" aesthetics with muted earth tones to reduce digital footprint.
-* **Architecture:** Implemented "Floating Card" layout for modern mobile-SaaS look.
-* **Heuristic Hardening:** Mitigated browser extension interference via hidden honeypot fields.
+---
+
+## 🔍 Audit & Version History
+
+### v1.9.2: The "BaitLogic" Pivot
+* Scrubbed "Nibble" branding to eliminate name-collision with commercial apps.
+* Standardized "Engine" terminology for future skin support.
+
+### v1.9.0: Cognitive Camouflage
+* Replaced "Matrix/Cyber" aesthetics with muted earth tones.
+* Implemented "Floating Card" layout for modern mobile-SaaS mimicry.
 
 ### v1.8.2: Operational Hardening
-* **Silent-Sync:** Moved from scalar time-indexing to species-based mapping for superior deniability.
-* **RDS Upgrade:** Transitioned to 2-digit Recursive Digit Sum logic, increasing collision resistance to 1:100.
+* **Silent-Sync:** Moved from scalar time-indexing to species-based mapping.
 * **Field Visibility:** Adjusted contrast ratios for use in direct sunlight.
-
-### v1.7.7: Initial Tactical Release
-* Established core "Cast & Catch" substitution engine.
-* Developed "Add to Home Screen" PWA deployment model.
