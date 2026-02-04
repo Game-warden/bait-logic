@@ -2,11 +2,34 @@
 ### Project Status: Active / Stable (Trout Stream Build)
 
 ---
+---
 
 ### 🛡️ LATEST UPDATE: v1.9.1 (Patch Notes)
-* **Terminology Alignment:** Refined field labels to "Bait Profile" and "Data Stream" to better reflect the camouflage aesthetic.
-* **OpSec Documentation:** Added clarification to `SOP.md` regarding **Temporal Salt Rotation** (addressing feedback from the r/selfhosted community audit).
-* **UI Polish:** Minor CSS adjustments to ensure the 'Boring UI' renders correctly across all mobile browsers (tested for field reliability).
+* **Terminology Alignment:** Refined field labels to **"Bait Profile"** and **"Data Stream"** to better reflect the camouflage aesthetic.
+* **OpSec Documentation:** Updated `SOP.md` to clarify the **Temporal Salt Rotation** logic.
+* **Community Recognition:** This update was released in direct response to a technical audit from the **r/selfhosted** community.
+* **Special thanks** to the auditors there for helping refine field terminology for better operational clarity.
+
+---
+
+### 🧠 Design Rationale (The 'Why')
+
+* Nibble is often misunderstood as a "simple" app because its complexity is intentionally hidden to maintain its profile. 
+*
+* **Why No Database?** Databases leave forensic trails (logs, swap files, metadata). Nibble is designed to be **Stateless**.
+* Once the browser tab is closed, the 'vault' effectively ceases to exist in local memory.
+* 
+* **Why the 'Boring' UI?** This is **Cognitive Camouflage.** In many field scenarios, the presence of a known 'security app'
+* or 'vault' is itself a red flag. We hide sensitive data operations behind the guise of mundane technical logging.
+* 
+* **Why One HTML File?** **Zero Dependencies.** There is no `npm install`, no Docker image to pull, and no server-side
+* vulnerabilities to exploit. It leverages the browser's native **Web Crypto API** for hardware-level security without the overhead.
+* 
+* **Why No Database?** Databases leave forensic trails (logs, swap files, metadata). Nibble is designed to be **Stateless**. Once the browser tab is closed, the 'vault' effectively ceases to exist in local memory.
+*
+* **Why the 'Boring' UI?** This is **Cognitive Camouflage.** In many field scenarios, the presence of a known 'security app' or 'vault' is itself a red flag. We hide sensitive data operations behind the guise of mundane technical logging.
+*
+* **Why One HTML File?** **Zero Dependencies.** There is no `npm install`, no Docker image to pull, and no server-side vulnerabilities to exploit. It leverages the browser's native **Web Crypto API** for hardware-level security without the overhead.
 
 ---
 
