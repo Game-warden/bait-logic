@@ -102,3 +102,10 @@ The first two characters of any generated code represent the **Verification Nibb
 ### v1.8.2: Operational Hardening
 * **Silent-Sync:** Moved from scalar time-indexing to species-based mapping.
 * **Field Visibility:** Adjusted contrast ratios for use in direct sunlight.
+
+---
+
+### 🧠 Origins & "The Nibble"
+This project grew out of a manual obfuscation experiment I nicknamed "The Nibble"—a system of adding numbers two at a time to hide data in plain sight. 
+My friends thought I was nuts because the manual math was too slow.  I used AI as a "junior partner" to help me port that original "Nibble" logic into the Web Crypto API. 
+This app is the result of a "weird" human idea meeting modern browser encryption.
