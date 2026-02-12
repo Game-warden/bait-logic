@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BaitLogic | Field Operations Log</title>
+    <style>
+        :root {
+            --forest-green: #2d3e2f;
+            --stream-cream: #f4f1ea;
+            --trout-olive: #556b2f;
+            --accent-gold: #c5a059;
+            --alert-red: #8b0000;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--stream-cream);
+            color: var(--forest-green);
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 500px;
+            background: #fff;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border: 1px solid #dcdcdc;
+        }
+
+        .security-banner {
+            background: var(--forest-green);
+            color: var(--stream-cream);
+            padding: 10px;
+            border-radius: 6px 6px 0 0;
+            font-size: 0.8rem;
+            text-align: center;
+            border-left: 4px solid var(--accent-gold);
+        }
+
+        .terminal-dashboard {
+            background: #1a1a1a;
+            color: var(--accent-gold);
+            padding: 8px;
+            text-align: center;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border-radius: 0 0 6px 6px;
+            margin-bottom: 20px;
+            border-left: 4px solid var(--accent-gold);
+            letter-spacing: 1px;
+        }
+
+        h1 { font-size: 1.5rem; margin-bottom: 5px; color: var(--trout-olive); text-align: center; }
+        .subtitle { font-size: 0.9rem; text-align: center; margin-bottom: 20px; font-style: italic; opacity: 0.8; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; font-weight: 600; font-size: 0.9rem; }
+
+        input, textarea {
+            width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 6px;
+            box-sizing: border-box; font-family: monospace; background: #fafafa;
+        }
+
+        .toggle-group { display: flex; gap: 10px; margin-bottom: 20px; }
+        .toggle-btn { flex: 1; padding: 10px; border: 1px solid var(--trout-olive); background: transparent; cursor: pointer; border-radius: 6px; font-weight: bold; }
+        .toggle-btn.active { background: var(--trout-olive); color: white; }
+
+        button.action-btn {
+            width: 100%; padding: 15px; background: var(--forest-green); color: white; border: none;
+            border-radius: 6px; font-size: 1rem; font-weight: bold; cursor: pointer;
+        }
+
+        .result-container { position: relative; margin-top: 20px; }
+        .result-area { 
+            padding: 15px; background: #f0f0f0; border-radius: 6px; 
+            border: 1px dashed #999; word-break: break-all; font-family: monospace; 
+            min-height: 40px; white-space: pre-wrap;
+        }
+        
+        .copy-btn {
+            position: absolute; top: 5px; right: 5px;
+            padding: 5px 10px; font-size: 0.7rem; background: var(--trout-olive);
+            color: white; border: none; border-radius: 4px; cursor: pointer;
+            opacity: 0.8; transition: opacity 0.2s;
+        }
+        .copy-btn:hover { opacity: 1; }
+
+        .wipe-btn { margin-top: 15px; background: none; border: none; color: var(--alert-red); text-decoration: underline; font-size: 0.8rem; cursor: pointer; width: 100%; }
+        .species-sync { text-align: center; font-size: 0.75rem; margin-top: 10px; color: var(--trout-olive); }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <input type="text" name="fake-user-name" style="display:none" aria-hidden="true" tabindex="-1">
+    <input type="password" name="fake-user-pass" style="display:none" aria-hidden="true" tabindex="-1">
+
+    <div class="security-banner">
+        ⚠️ VOLATILE SESSION: Data resides in RAM only.
+    </div>
+    <div class="terminal-dashboard" id="utcClock">
+        UTC 00:00:00
+    </div>
+
+    <h1>🎣 BaitLogic v2.0</h1>
+    <div class="subtitle">Angler Edition | Secure Field Terminal</div>
+
+    <div class="toggle-group">
+        <button id="castBtn" class="toggle-btn active" onclick="setMode('cast')">CAST (Encrypt)</button>
+        <button id="catchBtn" class="toggle-btn" onclick="setMode('catch')">CATCH (Decrypt)</button>
+    </div>
+
+    <div class="form-group">
+        <label>Bait Profile (Secret Key)</label>
+        <input type="password" id="baitProfile" placeholder="Enter secure profile name..." 
+               autocomplete="new-password" data-1p-ignore data-lpignore="true" data-bwignore data-protonpass-ignore="true">
+    </div>
+
+    <div class="form-group">
+        <label id="inputLabel">Data Stream</label>
+        <textarea id="dataInput" rows="4" placeholder="Enter sensitive data..." 
+                  autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-protonpass-ignore="true"></textarea>
+    </div>
+
+    <button class="action-btn" onclick="processLogic()">RUN LOGIC</button>
+    
+    <div class="result-container">
+        <button class="copy-btn" id="copyBtn" onclick="copyResult()">COPY</button>
+        <div class="result-area" id="outputArea">Ready for input...</div>
+    </div>
+
+    <div class="species-sync" id="speciesDisplay">Syncing...</div>
+    <button class="wipe-btn" onclick="wipeSession()">PURGE SESSION MEMORY</button>
+</div>
+
+<script>
+    let mode = 'cast';
+    const PBKDF2_ITERATIONS = 100000;
+    const SALT_SIZE = 16;
+    const IV_SIZE = 12;
+    const species = ["Fish", "Puffer", "Tropical", "Shrimp", "Octopus", "Squid", "Crab", "Shell", "Dolphin", "Whale", "Humpback", "Shark"];
+
+    function setMode(newMode) {
+        mode = newMode;
+        document.getElementById('castBtn').classList.toggle('active', mode === 'cast');
+        document.getElementById('catchBtn').classList.toggle('active', mode === 'catch');
+        document.getElementById('inputLabel').innerText = mode === 'cast' ? 'Data Stream' : 'Ciphertext';
+        document.getElementById('dataInput').placeholder = mode === 'cast' ? 'Enter sensitive data...' : 'Paste ciphertext here...';
+    }
+
+    function getSaltForTime(time) {
+        const h = time.getUTCHours() % 12;
+        const b = Math.floor(time.getUTCMinutes() / 5);
+        return species[h] + ((h * 100) + b).toString();
+    }
+
+    function updateDisplay() {
+        const now = new Date();
+        const h = now.getUTCHours() % 12;
+        const b = Math.floor(now.getUTCMinutes() / 5);
+        const utcStr = now.toISOString().split('T')[1].split('.')[0];
+        document.getElementById('utcClock').innerText = `UTC ${utcStr}`;
+        document.getElementById('speciesDisplay').innerText = `Active Window: 🌊 ${species[h]} | Block: ${b}`;
+    }
+
+    function addPadding(text) {
+        const padLen = Math.floor(Math.random() * 32);
+        const padding = Array.from({length: padLen}, () => String.fromCharCode(Math.floor(Math.random() * 94) + 33)).join('');
+        return padLen.toString().padStart(4, '0') + padding + text;
+    }
+
+    function removePadding(paddedText) {
+        const padLen = parseInt(paddedText.substring(0, 4));
+        return paddedText.substring(4 + padLen);
+    }
+
+    async function decryptWithSalt(cipherData, password, saltStr) {
+        const encoder = new TextEncoder();
+        const combined = Uint8Array.from(atob(cipherData), c => c.charCodeAt(0));
+        const salt = combined.slice(0, SALT_SIZE);
+        const iv = combined.slice(SALT_SIZE, SALT_SIZE + IV_SIZE);
+        const ciphertext = combined.slice(SALT_SIZE + IV_SIZE);
+        
+        const baseKey = await window.crypto.subtle.importKey("raw", encoder.encode(password + saltStr), "PBKDF2", false, ["deriveKey"]);
+        const key = await window.crypto.subtle.deriveKey(
+            { name: "PBKDF2", salt, iterations: PBKDF2_ITERATIONS, hash: "SHA-256" },
+            baseKey, { name: "AES-GCM", length: 256 }, false, ["decrypt"]
+        );
+        return await window.crypto.subtle.decrypt({ name: "AES-GCM", iv }, key, ciphertext);
+    }
+
+    async function processLogic() {
+        const password = document.getElementById('baitProfile').value;
+        const input = document.getElementById('dataInput').value;
+        const outArea = document.getElementById('outputArea');
+
+        if (!password || !input) {
+            outArea.innerText = "🚨 ALERT: Input and Key required.";
+            return;
+        }
+
+        try {
+            const encoder = new TextEncoder();
+            const now = new Date();
+
+            if (mode === 'cast') {
+                const currentSalt = getSaltForTime(now);
+                const salt = window.crypto.getRandomValues(new Uint8Array(SALT_SIZE));
+                const iv = window.crypto.getRandomValues(new Uint8Array(IV_SIZE));
+                const baseKey = await window.crypto.subtle.importKey("raw", encoder.encode(password + currentSalt), "PBKDF2", false, ["deriveKey"]);
+                const key = await window.crypto.subtle.deriveKey(
+                    { name: "PBKDF2", salt, iterations: PBKDF2_ITERATIONS, hash: "SHA-256" },
+                    baseKey, { name: "AES-GCM", length: 256 }, false, ["encrypt"]
+                );
+                const ciphertext = await window.crypto.subtle.encrypt({ name: "AES-GCM", iv }, key, encoder.encode(addPadding(input)));
+                const combined = new Uint8Array(SALT_SIZE + IV_SIZE + ciphertext.byteLength);
+                combined.set(salt); combined.set(iv, SALT_SIZE); combined.set(new Uint8Array(ciphertext), SALT_SIZE + IV_SIZE);
+                outArea.innerText = btoa(String.fromCharCode(...combined));
+            } else {
+                try {
+                    const decrypted = await decryptWithSalt(input, password, getSaltForTime(now));
+                    outArea.innerText = removePadding(new TextDecoder().decode(decrypted));
+                } catch (e) {
+                    const prevBlock = new Date(now.getTime() - 5 * 60000);
+                    const decrypted = await decryptWithSalt(input, password, getSaltForTime(prevBlock));
+                    outArea.innerText = removePadding(new TextDecoder().decode(decrypted));
+                }
+            }
+        } catch (e) { outArea.innerText = "🚨 SIGNAL INTERFERENCE: INTEGRITY FAILURE"; }
+    }
+
+    function copyResult() {
+        const text = document.getElementById('outputArea').innerText;
+        if (text === "Ready for input..." || text.includes("🚨")) return;
+        
+        navigator.clipboard.writeText(text).then(() => {
+            const btn = document.getElementById('copyBtn');
+            const originalText = btn.innerText;
+            btn.innerText = 'COPIED!';
+            
+            // OPSEC: Dual-Scrub (Input and Output)
+            document.getElementById('dataInput').value = '';
+            document.getElementById('outputArea').innerText = 'Ready for input... (Scrubbed)';
+            
+            setTimeout(() => { btn.innerText = originalText; }, 2000);
+        }).catch(err => {
+            document.getElementById('outputArea').innerText = "🚨 CLIPBOARD ERROR: Data not scrubbed.";
+        });
+    }
+
+    function wipeSession() {
+        document.getElementById('baitProfile').value = '';
+        document.getElementById('dataInput').value = '';
+        document.getElementById('outputArea').innerText = 'Session Purged.';
+    }
+    setInterval(updateDisplay, 1000);
+    updateDisplay();
+</script>
+</body>
+</html>

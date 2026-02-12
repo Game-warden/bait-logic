@@ -1,0 +1,28 @@
+# Ignore sensitive local files
+*.log
+*.tmp
+session_keys.txt
+private_notes.md
+.DS_Store
+# --- OS Metadata ---
+.DS_Store
+Thumbs.db
+*.swp
+
+# --- IDE / Editor Config ---
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# --- Security Safeguards ---
+# Prevents accidental upload of local test keys or scratchpads
+*.key
+*.secret
+temp_hook.txt
+draft_packets.txt
+
+# --- Logs ---
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
