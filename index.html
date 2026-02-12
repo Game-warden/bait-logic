@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BaitLogic | Field Operations Log</title>
+    <script src="logic.js"></script>
     <style>
         :root {
             --forest-green: #2d3e2f;
@@ -102,13 +103,13 @@
     <input type="password" name="fake-user-pass" style="display:none" aria-hidden="true" tabindex="-1">
 
     <div class="security-banner">
-        ⚠️ VOLATILE SESSION: Data resides in RAM only.
+        ⚠️ VOLATILE SESSION: Branch-Free Mode (v2.0-Alpha)
     </div>
     <div class="terminal-dashboard" id="utcClock">
         UTC 00:00:00
     </div>
 
-    <h1>🎣 BaitLogic v2.0</h1>
+    <h1>🎣 BaitLogic v2.0-Alpha</h1>
     <div class="subtitle">Angler Edition | Secure Field Terminal</div>
 
     <div class="toggle-group">
@@ -118,14 +119,18 @@
 
     <div class="form-group">
         <label>Bait Profile (Secret Key)</label>
-        <input type="password" id="baitProfile" placeholder="Enter secure profile name..." 
-               autocomplete="new-password" data-1p-ignore data-lpignore="true" data-bwignore data-protonpass-ignore="true">
+        <input type="password" id="baitProfile" 
+               placeholder="Enter secure profile name..." 
+               autocomplete="off" 
+               data-1p-ignore data-lpignore="true" data-bwignore data-protonpass-ignore="true">
     </div>
 
     <div class="form-group">
         <label id="inputLabel">Data Stream</label>
-        <textarea id="dataInput" rows="4" placeholder="Enter sensitive data..." 
-                  autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-protonpass-ignore="true"></textarea>
+        <textarea id="dataInput" rows="4" 
+                  placeholder="Enter sensitive data..." 
+                  autocomplete="off"
+                  data-1p-ignore data-lpignore="true" data-bwignore data-protonpass-ignore="true"></textarea>
     </div>
 
     <button class="action-btn" onclick="processLogic()">RUN LOGIC</button>
@@ -141,9 +146,6 @@
 
 <script>
     let mode = 'cast';
-    const PBKDF2_ITERATIONS = 100000;
-    const SALT_SIZE = 16;
-    const IV_SIZE = 12;
     const species = ["Fish", "Puffer", "Tropical", "Shrimp", "Octopus", "Squid", "Crab", "Shell", "Dolphin", "Whale", "Humpback", "Shark"];
 
     function setMode(newMode) {
@@ -154,12 +156,6 @@
         document.getElementById('dataInput').placeholder = mode === 'cast' ? 'Enter sensitive data...' : 'Paste ciphertext here...';
     }
 
-    function getSaltForTime(time) {
-        const h = time.getUTCHours() % 12;
-        const b = Math.floor(time.getUTCMinutes() / 5);
-        return species[h] + ((h * 100) + b).toString();
-    }
-
     function updateDisplay() {
         const now = new Date();
         const h = now.getUTCHours() % 12;
@@ -167,32 +163,6 @@
         const utcStr = now.toISOString().split('T')[1].split('.')[0];
         document.getElementById('utcClock').innerText = `UTC ${utcStr}`;
         document.getElementById('speciesDisplay').innerText = `Active Window: 🌊 ${species[h]} | Block: ${b}`;
-    }
-
-    function addPadding(text) {
-        const padLen = Math.floor(Math.random() * 32);
-        const padding = Array.from({length: padLen}, () => String.fromCharCode(Math.floor(Math.random() * 94) + 33)).join('');
-        return padLen.toString().padStart(4, '0') + padding + text;
-    }
-
-    function removePadding(paddedText) {
-        const padLen = parseInt(paddedText.substring(0, 4));
-        return paddedText.substring(4 + padLen);
-    }
-
-    async function decryptWithSalt(cipherData, password, saltStr) {
-        const encoder = new TextEncoder();
-        const combined = Uint8Array.from(atob(cipherData), c => c.charCodeAt(0));
-        const salt = combined.slice(0, SALT_SIZE);
-        const iv = combined.slice(SALT_SIZE, SALT_SIZE + IV_SIZE);
-        const ciphertext = combined.slice(SALT_SIZE + IV_SIZE);
-        
-        const baseKey = await window.crypto.subtle.importKey("raw", encoder.encode(password + saltStr), "PBKDF2", false, ["deriveKey"]);
-        const key = await window.crypto.subtle.deriveKey(
-            { name: "PBKDF2", salt, iterations: PBKDF2_ITERATIONS, hash: "SHA-256" },
-            baseKey, { name: "AES-GCM", length: 256 }, false, ["decrypt"]
-        );
-        return await window.crypto.subtle.decrypt({ name: "AES-GCM", iv }, key, ciphertext);
     }
 
     async function processLogic() {
@@ -206,51 +176,36 @@
         }
 
         try {
-            const encoder = new TextEncoder();
-            const now = new Date();
-
             if (mode === 'cast') {
-                const currentSalt = getSaltForTime(now);
-                const salt = window.crypto.getRandomValues(new Uint8Array(SALT_SIZE));
-                const iv = window.crypto.getRandomValues(new Uint8Array(IV_SIZE));
-                const baseKey = await window.crypto.subtle.importKey("raw", encoder.encode(password + currentSalt), "PBKDF2", false, ["deriveKey"]);
-                const key = await window.crypto.subtle.deriveKey(
-                    { name: "PBKDF2", salt, iterations: PBKDF2_ITERATIONS, hash: "SHA-256" },
-                    baseKey, { name: "AES-GCM", length: 256 }, false, ["encrypt"]
-                );
-                const ciphertext = await window.crypto.subtle.encrypt({ name: "AES-GCM", iv }, key, encoder.encode(addPadding(input)));
-                const combined = new Uint8Array(SALT_SIZE + IV_SIZE + ciphertext.byteLength);
-                combined.set(salt); combined.set(iv, SALT_SIZE); combined.set(new Uint8Array(ciphertext), SALT_SIZE + IV_SIZE);
-                outArea.innerText = btoa(String.fromCharCode(...combined));
+                const result = await encryptWithLogic(input, password);
+                outArea.innerText = result;
             } else {
-                try {
-                    const decrypted = await decryptWithSalt(input, password, getSaltForTime(now));
-                    outArea.innerText = removePadding(new TextDecoder().decode(decrypted));
-                } catch (e) {
-                    const prevBlock = new Date(now.getTime() - 5 * 60000);
-                    const decrypted = await decryptWithSalt(input, password, getSaltForTime(prevBlock));
-                    outArea.innerText = removePadding(new TextDecoder().decode(decrypted));
-                }
+                const decryptedBuffer = await decryptWithLogic(input, password);
+                const plainText = new TextDecoder().decode(decryptedBuffer).replace(/\0/g, '');
+                outArea.innerText = removePadding(plainText);
             }
-        } catch (e) { outArea.innerText = "🚨 SIGNAL INTERFERENCE: INTEGRITY FAILURE"; }
+        } catch (e) { 
+            console.error(e);
+            outArea.innerText = "🚨 SIGNAL INTERFERENCE: INTEGRITY FAILURE"; 
+        }
+    }
+
+    function removePadding(paddedText) {
+        try {
+            const padLen = parseInt(paddedText.substring(0, 4));
+            return paddedText.substring(4 + padLen);
+        } catch (e) { return paddedText; }
     }
 
     function copyResult() {
         const text = document.getElementById('outputArea').innerText;
         if (text === "Ready for input..." || text.includes("🚨")) return;
-        
         navigator.clipboard.writeText(text).then(() => {
             const btn = document.getElementById('copyBtn');
-            const originalText = btn.innerText;
             btn.innerText = 'COPIED!';
-            
-            // OPSEC: Dual-Scrub (Input and Output)
             document.getElementById('dataInput').value = '';
             document.getElementById('outputArea').innerText = 'Ready for input... (Scrubbed)';
-            
-            setTimeout(() => { btn.innerText = originalText; }, 2000);
-        }).catch(err => {
-            document.getElementById('outputArea').innerText = "🚨 CLIPBOARD ERROR: Data not scrubbed.";
+            setTimeout(() => { btn.innerText = 'COPY'; }, 2000);
         });
     }
 
@@ -259,6 +214,7 @@
         document.getElementById('dataInput').value = '';
         document.getElementById('outputArea').innerText = 'Session Purged.';
     }
+
     setInterval(updateDisplay, 1000);
     updateDisplay();
 </script>
